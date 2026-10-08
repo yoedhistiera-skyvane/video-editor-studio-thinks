@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Video Editor Studio Campaign Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Brand tokens taken from videoeditorstudio.com (--ves-*). The brand is dark-only, so this page commits to one dark theme. */
+:root{
+  color-scheme: dark;
+  --bg:#0E0D11;
+  --surface:#1A171E;
+  --surface-2:#221F25;
+  --line:#2B2731;
+  --line-strong:#332F38;
+  --neutral:#8E8A97;
+  --text:#DCDCDC;
+  --white:#FFFFFF;
+  --muted:rgba(220,220,220,.65);
+  --dim:rgba(220,220,220,.5);
+  --accent-1:#6A6FEC;
+  --accent-2:#A06AEC;
+  --grad:linear-gradient(135deg,#6A6FEC 0%,#A06AEC 100%);
+  --accent-soft:rgba(160,106,236,.16);
+  --accent-tint:rgba(160,106,236,.05);
+  --accent-border:rgba(160,106,236,.28);
+  --good:#3DCB8C; --good-soft:rgba(61,203,140,.14);
+  --warn:#F5A623; --warn-soft:rgba(245,166,35,.14);
+  --bad:#FF5C6C; --bad-soft:rgba(255,92,108,.14);
+  --font:"Poppins", "Helvetica Neue", Arial, sans-serif;
+  --mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14.5px;line-height:1.65;padding-inline:20px;padding-block:0 72px}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:72px}
+h1,h2,h3{color:var(--white);margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,5.2vw,46px);line-height:1.12;font-weight:600;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3vw,28px);line-height:1.2;font-weight:600;letter-spacing:-.02em}
+h3{font-size:16px;line-height:1.4;font-weight:600;letter-spacing:-.01em}
+p{margin:0;max-width:70ch}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text);border:1px solid var(--accent-border);background:var(--accent-tint);border-radius:999px;padding:5px 12px;width:fit-content}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--grad)}
+.label{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);padding:1px 6px;border-radius:6px;word-break:break-all}
+a{color:var(--text)}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:4px}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(14,13,17,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-inline:-20px;padding-inline:20px}
+.topbar-in{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;flex-wrap:wrap;padding-block:8px}
+.wordmark{font-size:12.5px;font-weight:500;letter-spacing:.2em;color:var(--white);text-transform:uppercase;white-space:nowrap}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px}
+nav a{font-size:13px;color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--white)}
+@media (max-width:640px){nav{display:none}}
+
+/* hero */
+.hero{padding-top:56px;display:flex;flex-direction:column;gap:18px}
+.hero .lede{font-size:16.5px;color:var(--text);max-width:62ch}
+.byline{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--muted)}
+.byline b{color:var(--text);font-weight:500}
+
+/* summary */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.summary{grid-template-columns:1fr}}
+.sum{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.sum .k{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.sum .k::before{content:"";width:8px;height:8px;border-radius:50%}
+.sum.good .k{color:var(--good)} .sum.good .k::before{background:var(--good)}
+.sum.bad .k{color:var(--bad)} .sum.bad .k::before{background:var(--bad)}
+.sum.next .k{color:var(--accent-2)} .sum.next .k::before{background:var(--grad)}
+.sum p{font-size:14px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.kpi{padding:18px 20px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi .v{font-size:28px;font-weight:600;color:var(--white);letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi.hi .v{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-bottom:1px solid var(--line)}.kpi:nth-child(2n){border-right:0}.kpi:last-child{grid-column:span 2;border-bottom:0}}
+
+/* sections */
+section{display:flex;flex-direction:column;gap:24px;scroll-margin-top:72px}
+.sec-head{display:flex;flex-direction:column;gap:12px}
+.sec-head p{color:var(--muted)}
+
+/* table */
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:720px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+th{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);background:var(--surface-2)}
+td{font-size:14px}
+td .sub{display:block;font-size:12px;color:var(--muted);font-weight:400}
+td strong{color:var(--white);font-weight:600}
+tr:last-child td{border-bottom:0}
+tr.total td{background:var(--surface-2);color:var(--white);font-weight:600}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;padding:3px 10px;border-radius:999px}
+.status.good{background:var(--good-soft);color:var(--good)}
+.status.warn{background:var(--warn-soft);color:var(--warn)}
+.status.bad{background:var(--bad-soft);color:var(--bad)}
+td.bad{color:var(--bad)}
+
+/* findings */
+.cards{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;display:grid;grid-template-columns:52px 1fr;gap:6px 20px}
+.card .id{font-size:13px;font-weight:600;color:var(--dim);padding-top:2px}
+.card .body{display:flex;flex-direction:column;gap:16px;min-width:0}
+.card .head{display:flex;flex-direction:column;gap:8px}
+@media (max-width:620px){.card{grid-template-columns:1fr;padding:20px}}
+ul.pts{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:72ch}
+ul.pts li::marker{color:var(--accent-2)}
+.chart{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.bar-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 64px;gap:14px;align-items:center}
+.bar-row .n{font-size:13px;color:var(--text)}
+.bar{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--grad)}
+.bar i.bad{background:var(--bad)} .bar i.good{background:var(--good)} .bar i.neutral{background:var(--neutral)}
+.bar-row .v{font-size:13px;text-align:right;color:var(--white);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.bar-row{grid-template-columns:1fr 56px}.bar-row .n{grid-column:1/-1}}
+
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.stack span{display:flex;align-items:center;padding-inline:10px;font-size:11.5px;font-weight:500;color:#0E0D11;white-space:nowrap;overflow:hidden}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted)}
+.legend b{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:0}
+
+.orders{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:760px){.orders{grid-template-columns:1fr}}
+.order{border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--bg)}
+.order-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.order-top strong{color:var(--white);font-weight:600;font-size:14.5px}
+.amt{font-size:26px;font-weight:600;color:var(--white);line-height:1;letter-spacing:-.02em;text-align:right;font-variant-numeric:tabular-nums}
+.roas{font-size:11.5px;color:var(--muted);text-align:right;margin-top:4px}
+.match{display:grid;grid-template-columns:1fr 18px 1fr;gap:8px;align-items:stretch;font-size:13px}
+.match div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--white)}
+.match div .label{display:block;margin-bottom:2px}
+.match .arrow{background:none;border:0;padding:0;display:flex;align-items:center;justify-content:center;color:var(--dim)}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.steps span{background:var(--surface);padding:6px 4px;text-align:center;font-size:10.5px;color:var(--dim);line-height:1.3}
+.steps b{display:block;font-size:14px;color:var(--white);font-weight:600;font-variant-numeric:tabular-nums}
+.order .why{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.callout{display:flex;gap:12px;font-size:13.5px;background:var(--warn-soft);border:1px solid rgba(245,166,35,.3);border-radius:10px;padding:14px 16px}
+.callout strong{color:var(--warn);font-weight:600;white-space:nowrap}
+
+.utm{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.utm{grid-template-columns:1fr}}
+.utm > div{border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.utm .x{color:var(--bad)} .utm .ok{color:var(--good)}
+
+/* suggestions */
+.sug-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.sug{display:grid;grid-template-columns:52px 1fr 150px;gap:8px 20px;padding:24px 26px;border-bottom:1px solid var(--line)}
+.sug:last-child{border-bottom:0}
+.sug .id{font-size:13px;font-weight:600;color:var(--dim);padding-top:2px}
+.sug .body{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sug .meta{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.sug .ref{font-size:12px;color:var(--dim)}
+.prio{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:6px}
+.prio.now{background:var(--bad-soft);color:var(--bad)}
+.prio.week{background:var(--warn-soft);color:var(--warn)}
+.prio.done{background:var(--good-soft);color:var(--good)}
+.prio.test{background:var(--accent-soft);color:#C6A6F5}
+@media (max-width:760px){.sug{grid-template-columns:1fr;padding:20px}.sug .meta{flex-direction:row;flex-wrap:wrap;align-items:center;order:-1}}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:4px 10px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);color:var(--text)}
+
+.flow{display:grid;grid-template-columns:1fr 28px 1fr;gap:12px;align-items:center}
+.flow .col{display:flex;flex-direction:column;gap:6px}
+.flow .row{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13.5px;background:var(--bg);font-variant-numeric:tabular-nums}
+.flow .row.off{color:var(--dim)}
+.flow .row.off span:first-child{text-decoration:line-through}
+.flow .row.main{border-color:var(--accent-border);background:var(--accent-tint);color:var(--white);font-weight:500}
+.flow .arrow{color:var(--dim);text-align:center;font-size:18px}
+@media (max-width:560px){.flow{grid-template-columns:1fr}.flow .arrow{transform:rotate(90deg)}}
+
+/* video concepts */
+.concepts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:760px){.concepts{grid-template-columns:1fr}}
+.concept{border:1px solid var(--line);border-radius:12px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+.concept .ch{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.concept .ch strong{color:var(--white);font-weight:600;font-size:14.5px}
+.concept .ch .label{white-space:nowrap}
+.concept .cb{padding:14px 16px;display:flex;flex-direction:column;gap:10px;font-size:13.5px}
+.concept dl{margin:0;display:grid;grid-template-columns:78px 1fr;gap:6px 12px}
+.concept dt{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding-top:2px}
+.concept dd{margin:0}
+.testbox{border:1px dashed var(--line-strong);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+
+/* next steps */
+.next{background:var(--surface);border:1px solid var(--accent-border);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:26px;position:relative;overflow:hidden}
+.next::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--grad)}
+.decisions{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.decision{display:grid;grid-template-columns:22px 1fr auto;gap:14px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--bg);font-size:14px}
+.decision:last-child{border-bottom:0}
+.decision .box{width:18px;height:18px;border:1.5px solid var(--line-strong);border-radius:5px}
+.decision .ref{font-size:12px;color:var(--dim)}
+.abo{display:flex;flex-direction:column;align-items:center}
+.abo .camp{border:1px solid var(--accent-border);background:var(--accent-tint);border-radius:10px;padding:12px 20px;text-align:center;color:var(--white)}
+.abo .stem{width:1px;height:20px;background:var(--line-strong)}
+.abo .sets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;padding-top:20px;border-top:1px solid var(--line-strong)}
+.abo .set{border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:2px;background:var(--bg);text-align:center}
+.abo .set strong{color:var(--white);font-weight:600}
+.abo .set .b{font-size:13px;font-weight:600;margin-top:6px}
+@media (max-width:560px){.abo .sets{grid-template-columns:1fr}}
+
+.gloss{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0}
+.gloss summary{cursor:pointer;padding:14px 20px;font-size:13.5px;font-weight:500;color:var(--white);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.gloss summary::-webkit-details-marker{display:none}
+.gloss summary::after{content:"+";font-size:18px;color:var(--accent-2)}
+.gloss[open] summary::after{content:"–"}
+.gloss dl{margin:0;padding:4px 20px 20px;display:grid;grid-template-columns:160px 1fr;gap:10px 20px;border-top:1px solid var(--line);padding-top:16px}
+.gloss dt{font-weight:600;color:var(--white);font-size:13.5px}
+.gloss dd{margin:0;font-size:13.5px;color:var(--text)}
+@media (max-width:560px){.gloss dl{grid-template-columns:1fr;gap:2px}.gloss dd{margin-bottom:10px}}
+.takeaway{font-size:15px;color:var(--white);font-weight:500;line-height:1.55;max-width:70ch;padding-left:14px;border-left:2px solid var(--accent-2)}
+.fixref{font-size:12px;color:var(--dim)}
+.fixref b{color:var(--text);font-weight:500}
+.adrow{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:start}
+.thumb{width:132px;max-width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block}
+.thumbcap{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.3}
+@media (max-width:520px){.adrow{grid-template-columns:1fr}.thumb{width:160px}}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:760px){.strip{grid-template-columns:repeat(2,1fr)}}
+.tile{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.tile img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
+.tile .tb{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.tile .tn{font-size:12.5px;color:var(--white);font-weight:600;line-height:1.3}
+.tile .tflow{display:flex;align-items:center;gap:6px;font-size:12px;flex-wrap:wrap}
+.tile .tflow span{background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-variant-numeric:tabular-nums}
+.tile .tflow span.o{border-color:var(--accent-border);background:var(--accent-tint);color:var(--white);font-weight:600}
+.tile .tflow i{font-style:normal;color:var(--dim)}
+details.more{border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+details.more > summary{cursor:pointer;list-style:none;padding:12px 16px;font-size:13.5px;font-weight:500;color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.more > summary::-webkit-details-marker{display:none}
+details.more > summary::after{content:"Show";font-size:12px;font-weight:500;color:#C6A6F5;border:1px solid var(--accent-border);background:var(--accent-tint);padding:3px 10px;border-radius:999px}
+details.more[open] > summary::after{content:"Hide"}
+details.more > .inner{padding:4px 16px 18px;display:flex;flex-direction:column;gap:18px}
+details.more .deep{border-top:0;padding-top:0}
+.funnel-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.fstep{display:grid;grid-template-columns:minmax(150px,210px) 1fr 70px 96px;gap:14px;align-items:center}
+.fstep .fl{font-size:13.5px;color:var(--text)}
+.fstep .fb{height:26px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+.fstep .fb i{display:block;height:100%;background:var(--grad);border-radius:6px;min-width:3px}
+.fstep .fc{font-size:15px;font-weight:600;color:var(--white);text-align:right;font-variant-numeric:tabular-nums}
+.fstep .fr{font-size:12px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.fstep.leak .fr{color:var(--bad);font-weight:600}
+.fstep.leak .fl{color:var(--white);font-weight:500}
+.fhead{display:grid;grid-template-columns:minmax(150px,210px) 1fr 70px 96px;gap:14px}
+.fhead span:nth-child(3),.fhead span:nth-child(4){text-align:right}
+@media (max-width:600px){.fstep,.fhead{grid-template-columns:1fr 56px 80px}.fstep .fb,.fhead span:nth-child(2){display:none}}
+.deep{display:flex;flex-direction:column;gap:18px;border-top:1px solid var(--line);padding-top:20px}
+.why-item{display:flex;flex-direction:column;gap:10px}
+.why-item h4{margin:0;font-size:14.5px;font-weight:600;color:var(--white);line-height:1.4}
+.days{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;padding-top:18px}
+.day{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pair{display:flex;gap:4px;align-items:flex-end;height:150px}
+.vb{position:relative;width:22px;border-radius:5px 5px 0 0;display:block}
+.vb.cc{background:var(--bad)} .vb.sell{background:var(--good)}
+.vb em{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-style:normal;font-size:9.5px;color:var(--muted);white-space:nowrap;margin-bottom:3px;font-variant-numeric:tabular-nums}
+.vb.sell em{display:none}
+.dl{font-size:11.5px;color:var(--text);white-space:nowrap}
+.sale{font-size:10.5px;color:var(--good);min-height:15px;white-space:nowrap}
+@media (max-width:520px){.vb{width:13px}.vb em{display:none}.days{gap:4px}}
+.cmp-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table.cmp{min-width:420px}
+table.cmp th,table.cmp td{padding:10px 14px}
+table.cmp td:first-child{color:var(--muted)}
+table.cmp td.bad{color:var(--bad);font-weight:600} table.cmp td.ok{color:var(--good);font-weight:600}
+footer{font-size:12.5px;color:var(--dim);border-top:1px solid var(--line);padding-top:20px;display:flex;flex-direction:column;gap:6px}
+</style><style>
+.weeks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;padding-top:22px}
+.wk{display:flex;flex-direction:column;align-items:center;gap:6px}
+.wk .pair{height:160px}
+.vb.sp{background:var(--neutral)} .vb.rv{background:var(--good)} .vb.rv.low{background:var(--bad)}
+.vb.rv em,.vb.sp em{display:block}
+.wk .roas{font-size:13px;font-weight:600;color:var(--white);font-variant-numeric:tabular-nums}
+.wk .roas.bad{color:var(--bad)}
+.wk .meta2{font-size:11px;color:var(--dim);text-align:center;line-height:1.35}
+.prog{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.prow{display:grid;grid-template-columns:44px 1fr 120px;gap:6px 18px;padding:16px 20px;border-bottom:1px solid var(--line);align-items:start}
+.prow:last-child{border-bottom:0}
+.prow .id{font-size:13px;font-weight:600;color:var(--dim);padding-top:2px}
+.prow h4{margin:0 0 4px;font-size:14.5px;font-weight:600;color:var(--white)}
+.prow p{font-size:13.5px;color:var(--text)}
+.prow .st{justify-self:end}
+.status.info{background:var(--accent-soft);color:#C6A6F5}
+@media (max-width:640px){.prow{grid-template-columns:1fr}.prow .st{justify-self:start;order:-1}}
+.delta{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.delta b{font-weight:500;color:var(--muted)}
+table.small td,table.small th{padding:11px 14px}
+.chip{display:inline-block;font-size:10.5px;font-weight:500;padding:1px 7px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);margin-left:6px;vertical-align:1px;white-space:nowrap}
+</style>
+</head>
+<body>
+<style>
+.inshort{display:flex;gap:10px;align-items:baseline;font-size:14.5px;color:var(--white);max-width:72ch}
+.inshort b{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#C6A6F5;white-space:nowrap}
+.camps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.camps{grid-template-columns:1fr}}
+.camp{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden}
+.camp::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--grad)}
+.camp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.camp-top h3{font-size:19px}
+.camp .budget{text-align:right}
+.camp .budget b{display:block;font-size:26px;font-weight:600;color:var(--white);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.camp .budget span{font-size:11.5px;color:var(--muted)}
+.flags{display:flex;flex-wrap:wrap;gap:6px}
+.flags span{font-size:12.5px;padding:4px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--white);font-weight:500}
+.camp dl{margin:0;display:grid;grid-template-columns:96px 1fr;gap:10px 14px;font-size:13.5px}
+.camp dt{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding-top:2px}
+.camp dd{margin:0}
+.shared{border:1px dashed var(--line-strong);border-radius:12px;padding:14px 16px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 20px;color:var(--muted)}
+.shared b{color:var(--white);font-weight:500}
+.prod{display:flex;align-items:center;gap:12px}
+.prod img{width:44px;height:44px;object-fit:contain;flex:none}
+.role{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:6px;white-space:nowrap}
+.role.lead{background:var(--accent-soft);color:#C6A6F5}
+.role.test{background:var(--warn-soft);color:var(--warn)}
+.role.sup{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.noads{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.noads{grid-template-columns:1fr}}
+.noad{background:var(--surface);border:1px solid var(--accent-border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.noad .top{display:flex;gap:14px;align-items:center}
+.noad img{width:72px;height:72px;object-fit:contain;flex:none}
+.noad strong{color:var(--white);font-size:15px;font-weight:600;display:block}
+.noad .fig{font-size:13px;color:var(--muted)}
+.noad .fig b{color:var(--white);font-weight:600}
+.noad p{font-size:13.5px}
+.minor{font-size:13px;color:var(--muted)}
+.minor b{color:var(--text);font-weight:500}
+.newads{display:flex;flex-direction:column;gap:22px}
+.pgroup{display:flex;flex-direction:column;gap:10px}
+.pgroup-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pgroup-h h3{font-size:15.5px}
+.pgroup-h span{font-size:12.5px;color:var(--muted)}
+.adgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.adgrid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:440px){.adgrid{grid-template-columns:1fr}}
+.ad{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.ad img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
+.ad .cap{padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.ad .cap strong{font-size:13px;color:var(--white);font-weight:600;line-height:1.35}
+.ad .cap span{font-size:11.5px;color:var(--dim)}
+.keepgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:760px){.keepgrid{grid-template-columns:repeat(2,1fr)}}
+.keep{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.keep img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
+.keep div{padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.keep strong{font-size:12.5px;color:var(--white);font-weight:600}
+.keep span{font-size:12px;color:var(--muted)}
+tr.grp td{background:var(--surface-2);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:9px 16px}
+.rule{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media (max-width:760px){.rule{grid-template-columns:1fr}}
+.rule > div{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--bg);display:flex;flex-direction:column;gap:6px}
+.rule .k{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.rule .k.good{color:var(--good)} .rule .k.warn{color:var(--warn)} .rule .k.bad{color:var(--bad)}
+.rule strong{font-size:22px;color:var(--white);font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.rule p{font-size:13.5px}
+.checks{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.check{display:grid;grid-template-columns:22px 1fr;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:14px;align-items:start}
+.check:last-child{border-bottom:0}
+.check i{width:18px;height:18px;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-border);margin-top:3px;position:relative}
+.check i::after{content:"";position:absolute;left:5px;top:3px;width:5px;height:8px;border:solid #C6A6F5;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.check b{color:var(--white);font-weight:600}
+.check span{display:block;font-size:13px;color:var(--muted)}
+.note{font-size:12.5px;color:var(--dim);max-width:80ch}
+.gapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:860px){.gapgrid{grid-template-columns:1fr}}
+.gapcard{background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--grad) border-box;border:1.5px solid transparent;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.gtop{display:flex;gap:14px;align-items:center}
+.gtop .gbox{width:84px;height:84px;object-fit:contain;flex:none}
+.gtop > div{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.gtop strong{color:var(--white);font-size:17px;font-weight:600;line-height:1.25}
+.gtop .fig{font-size:13px;color:var(--muted)}
+.gtop .fig b{color:var(--white);font-weight:600}
+.gapcard p{font-size:13.5px}
+.gnew{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.gthumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.gthumbs img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block}
+tr.gaprow td{background:var(--accent-tint)}
+tr.gaprow td:first-child{box-shadow:inset 3px 0 0 var(--accent-2)}
+.status.gapst{background:var(--bad-soft);color:var(--bad);font-weight:600}
+.tldr{background:var(--surface);border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--grad) border-box;border-radius:16px;padding:24px 26px;display:flex;flex-direction:column;gap:16px}
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:120px 1fr;gap:6px 18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.tl li:last-child{border-bottom:0;padding-bottom:0}
+.tl li b{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#C6A6F5;padding-top:3px}
+.tl li strong{color:var(--white);font-weight:600}
+@media (max-width:560px){.tl li{grid-template-columns:1fr}}
+@media (max-width:760px){#why .kpis{grid-template-columns:repeat(2,1fr)!important}}
+#why .two ul.pts{font-size:13.5px}
+#why .two ul.pts b{color:var(--white);font-weight:600}
+.ad .cap{gap:10px}
+.ad dl{margin:0;display:grid;grid-template-columns:84px 1fr;gap:7px 10px;font-size:12.5px;line-height:1.5}
+.ad dt{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding-top:2px}
+.ad dd{margin:0;color:var(--text)}
+.ad dd:first-of-type{color:var(--white);font-weight:500}
+.stage{display:inline-flex;width:fit-content;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.stage.cold{background:var(--surface-2);color:var(--text);border:1px solid var(--line-strong)}
+.stage.warm{background:var(--accent-soft);color:#C6A6F5}
+.stage.hot{background:var(--good-soft);color:var(--good)}
+.stagekey{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted);border:1px dashed var(--line-strong);border-radius:12px;padding:14px 16px}
+.stagekey > span:not(.label){display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font-weight:400;color:var(--dim)}
+</style>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="wordmark">Video Editor Studio</span>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#why">Why</a></li>
+        <li><a href="#plan">Plan</a></li>
+        <li><a href="#gap">No ads yet</a></li>
+        <li><a href="#markets">Markets</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#keep">Ads we keep</a></li>
+        <li><a href="#new">New ads</a></li>
+        <li><a href="#judge">Budget</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Meta rebuild plan · Oct 8, 2026</span>
+  <h1>Meta Rebuild Plan<br><span class="grad">Focus. Prove. Then scale.</span></h1>
+  <p class="lede">We are rebuilding the Meta account from scratch. Instead of four campaigns mixing every country, there will be two: one for the US, and one for the UK, Canada, Australia and Germany. The ads focus on the products that sell best in your Shopify store, using the ads that already brought sales or carts, plus new ads for best sellers that have never had an ad.</p>
+  <div class="byline">
+    <span>Store data <b>Shopify, Sep 6 – Oct 5</b></span>
+    <span>Ad data <b>Meta, Sep 11 – Oct 5</b></span>
+    <span>Prepared by <b>Yoedhistiera</b></span>
+  </div>
+</header>
+
+<section id="tldr" aria-labelledby="tldr-h">
+  <div class="tldr">
+    <span class="eyebrow">TL;DR</span>
+    <ul class="tl">
+      <li><b>What</b><span>We pause the current 4 campaigns and relaunch as 2: one for the <strong>US</strong>, one for the <strong>UK, Canada, Australia and Germany</strong>. At $100 a day, that's $60 and $40.</span></li>
+      <li><b>Why</b><span>The current setup spreads about $48 a day over 176 active ads in 8 ad sets. No ad set has had enough sales to learn, so there is nothing to lose by pausing, and the tracking fixes need new ad sets anyway.</span></li>
+      <li><b>Products</b><span>The 10 best sellers in Shopify, including <strong>3 that sell well but have never had an ad</strong>: Explainer, Cinematic and Tracker Callout.</span></li>
+      <li><b>Ads</b><span>The <strong>7 strongest ads</strong> we already have (they brought 18 of Meta's 22 sales), 1 existing video to test, and <strong>27 new ads</strong> covering all 10 products: 35 in total.</span></li>
+      <li><b>What we keep</b><span>Your pixel history, the best-selling audience, and the original posts with their likes and comments. Old campaigns are paused, not deleted.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="why" aria-labelledby="why-h">
+  <div class="sec-head">
+    <span class="eyebrow">Why rebuild</span>
+    <h2 id="why-h">Why we start again instead of fixing what's there</h2>
+    <p class="inshort"><b>In short</b> The current setup is spread too thin to learn, and the fixes we need can only be made in new ad sets.</p>
+  </div>
+
+  <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi"><span class="label">Campaigns</span><span class="v">4</span></div>
+    <div class="kpi"><span class="label">Ad sets</span><span class="v">8</span></div>
+    <div class="kpi"><span class="label">Active ads</span><span class="v">176</span></div>
+    <div class="kpi hi"><span class="label">Spend per ad, per day</span><span class="v">$0.27</span></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="id">01</span>
+      <div class="body">
+        <div class="head"><h3>The budget is spread too thin to learn</h3></div>
+        <ul class="pts">
+          <li>Over the last 14 days the account spent about $48 a day across 176 active ads. That is about $0.27 per ad per day, so most ads never get a real test.</li>
+          <li>Meta needs around 50 purchases a week in one ad set to finish learning. The whole account had 22 purchases in 25 days, so no ad set has ever finished learning.</li>
+          <li>That means pausing the current ad sets loses nothing. Two campaigns with one ad set each give every dollar a better chance to teach Meta who buys.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <span class="id">02</span>
+      <div class="body">
+        <div class="head"><h3>The fixes need new ad sets</h3></div>
+        <ul class="pts">
+          <li>Counting by clicks only (7-day click) can't be switched on in existing ad sets. Meta locks it when an ad set is created.</li>
+          <li>The country split, product browsing off, and each ad opening its own product page all go in cleanly at launch.</li>
+          <li>Every link gets tracking tags, including Triple Whale's, so the new results can be checked against your store from day one.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <span class="id">03</span>
+      <div class="body">
+        <div class="head"><h3>A fresh start doesn't erase what Meta knows</h3></div>
+        <ul class="pts">
+          <li>Most of what Meta has learned lives in your pixel (who visited and who bought), your audiences, and your posts. Pausing campaigns erases none of it, and the new campaigns use it from day one.</li>
+          <li>We already took what the old campaigns taught us: the ads that sold, the products that sell, and the markets that buy. They are all in this plan.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <span class="id">04</span>
+      <div class="body">
+        <div class="head"><h3>The risk is small</h3></div>
+        <ul class="pts">
+          <li>Your store-side tools (Triple Whale and your dashboard) show the current setup bringing back about $0.35 to $0.51 for every $1 spent. A short learning period puts little revenue at risk.</li>
+          <li>The old campaigns are paused, not deleted, so we keep their history to compare against and can switch back if needed.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="two">
+    <div>
+      <span class="label">What we carry over</span>
+      <ul class="pts">
+        <li><b>Your pixel history:</b> purchases and visitors stay with the account.</li>
+        <li><b>The best audience:</b> the 1% lookalike of past buyers brought 14 of Meta's 22 sales. It guides both new campaigns.</li>
+        <li><b>The original posts:</b> the 8 kept ads run from their existing posts, so their likes and comments come with them.</li>
+      </ul>
+    </div>
+    <div>
+      <span class="label">How we switch</span>
+      <ul class="pts">
+        <li>Build both campaigns paused, and check every link, headline and tag.</li>
+        <li>Launch at the start of a day and pause all old campaigns the same day, so old and new never compete for the same people.</li>
+        <li>No edits for the first 7 days: each edit restarts learning. We judge results at day 14.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">In week one, Meta's reported sales will likely look lower. Part of that is Meta no longer counting people who only saw an ad, not fewer real sales.</p>
+</section>
+
+<section id="plan" aria-labelledby="plan-h">
+  <div class="sec-head">
+    <span class="eyebrow">The plan</span>
+    <h2 id="plan-h">Two campaigns, split by market</h2>
+    <p class="inshort"><b>In short</b> One campaign for the US, one for the four next-best English-buying markets.</p>
+  </div>
+
+  <div class="camps">
+    <div class="camp">
+      <div class="camp-top">
+        <div><span class="label">Campaign 1</span><h3>United States</h3></div>
+        <div class="budget"><b>$60</b><span>a day, at $100/day total</span></div>
+      </div>
+      <div class="flags"><span>United States</span></div>
+      <dl>
+        <dt>Why</dt><dd>Your biggest market: 73 orders and $8,603 in the store, a third of all revenue. It also brought most of Meta's sales (15 of 22).</dd>
+        <dt>Top sellers here</dt><dd>Content Creator (15 orders), True Crime (13), Narrative (8), Tracker Callout (7)</dd>
+        <dt>Ads</dt><dd>The 7 kept ads, 1 video and the 27 new ones (35)</dd>
+      </dl>
+    </div>
+    <div class="camp">
+      <div class="camp-top">
+        <div><span class="label">Campaign 2</span><h3>UK, CA, AU, DE</h3></div>
+        <div class="budget"><b>$40</b><span>a day, at $100/day total</span></div>
+      </div>
+      <div class="flags"><span>United Kingdom</span><span>Canada</span><span>Australia</span><span>Germany</span></div>
+      <dl>
+        <dt>Why</dt><dd>Together almost as big as the US in your store: 69 orders and $6,921. They currently get less than a third of the Meta budget.</dd>
+        <dt>Top sellers here</dt><dd>True Crime (25 orders), Content Creator (11), Narrative (8), Cinematic (5)</dd>
+        <dt>Ads</dt><dd>Same ads as the US, in one ad set covering all four countries</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="small">
+      <thead><tr><th></th><th>Current setup</th><th>After the rebuild</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Campaigns</strong></td><td>4, each mixing 12 countries</td><td>2, split by market</td></tr>
+        <tr><td><strong>Ads</strong></td><td>63 ads with spend (Content Creator alone had 50 active)</td><td>35: the 7 strongest, 1 video and 27 new, about $3 per ad per day</td></tr>
+        <tr><td><strong>Products with ads</strong></td><td>7, with 3 top sellers missing</td><td>10, chosen from Shopify sales</td></tr>
+        <tr><td><strong>How sales are counted</strong></td><td>Clicks + ad views (7-day click, 1-day view)</td><td>Clicks only (7-day click), with your OK</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="gap" aria-labelledby="gap-h">
+  <div class="sec-head">
+    <span class="eyebrow">The biggest gap</span>
+    <h2 id="gap-h">Best sellers with no ads</h2>
+    <p class="inshort"><b>In short</b> Three of your top sellers have never had a Meta ad. They sell on their own, so they get ads first in the rebuild.</p>
+  </div>
+  <div class="gapgrid">
+    <div class="gapcard">
+      <div class="gtop"><img class="gbox" src="assets/campaign-plan-8-oct/products/explainer-bundle.webp" alt="Explainer Bundle box"><div><span class="status bad">No Meta ads yet</span><strong>Explainer Bundle</strong><span class="fig"><b>12 orders · $3,588</b> in Shopify · $299</span></div></div>
+      <p>Your third-highest revenue product, after Narrative and Content Creator, and the highest bundle price. One sale covers about three days of ad budget.</p>
+      <div class="gnew"><span class="label">New ads ready · 3</span><div class="gthumbs"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ExplainerChannel-MapsToTimelines_BOF_Most_Static-R6_4x5_v1.jpg" alt=""><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ScriptStat-DragMap_MOF_Solution_Static-R2_4x5_v1.jpg" alt=""><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ScriptStat-ScriptToScreen_TOF_Problem_Static-R4_4x5_v1.jpg" alt=""></div></div>
+    </div>
+    <div class="gapcard">
+      <div class="gtop"><img class="gbox" src="assets/campaign-plan-8-oct/products/cinematic-bundle.webp" alt="Cinematic Bundle box"><div><span class="status bad">No Meta ads yet</span><strong>Cinematic Bundle</strong><span class="fig"><b>14 orders · $1,386</b> in Shopify · $99</span></div></div>
+      <p>Sells in the US, UK, Canada and Germany. A good fit for short-film makers, and for the UK, where story bundles sell best.</p>
+      <div class="gnew"><span class="label">New ads ready · 3</span><div class="gthumbs"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_PictureLock-FestivalCut_MOF_Solution_Static-R2_4x5_v1.jpg" alt=""><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_PictureLock-TitleCard_TOF_Problem_Static-R1_4x5_v1.jpg" alt=""><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_PictureLock-WholeFilm_MOF_Solution_Static-R6_4x5_v1.jpg" alt=""></div></div>
+    </div>
+    <div class="gapcard">
+      <div class="gtop"><img class="gbox" src="assets/campaign-plan-8-oct/products/tracker-callout-pack.webp" alt="Tracker Callout Pack box"><div><span class="status bad">No Meta ads yet</span><strong>Tracker Callout Pack</strong><span class="fig"><b>11 orders · $1,089</b> in Shopify · $99 · 1 later refunded</span></div></div>
+      <p>Strong in the US (7 of 11 orders). Fits product reviewers and B-roll creators.</p>
+      <div class="gnew"><span class="label">New ads ready · 2</span><div class="gthumbs"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ReviewBroll-EditPageCallout_MOF_Solution_Static-R2_4x5_v1.jpg" alt=""><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ReviewBroll-EditPageCallout_TOF_Problem_Static-R7_4x5_v2.jpg" alt=""></div></div>
+    </div>
+  </div>
+  <p class="note">We checked every ad in your Meta account: 235 ads, active and paused, going back to February 2025. None of them links to these three products or names them in its headline or text. When product browsing is on, they can appear as small product cards under other ads, but none has ever had an ad of its own.</p>
+  <p class="minor"><b>Also selling with no ads:</b> Glitch Transitions Pack (8 orders, $19) and Realistic Digital Screen Pack (7 orders, $59). At these prices one Meta sale rarely covers its cost, so we leave them to the website.</p>
+</section>
+
+<section id="markets" aria-labelledby="markets-h">
+  <div class="sec-head">
+    <span class="eyebrow">Why these markets</span>
+    <h2 id="markets-h">Why the US, and why UK, CA, AU and DE</h2>
+    <p class="inshort"><b>In short</b> They are where your store already sells, and where Meta has already found buyers.</p>
+  </div>
+
+  <div class="funnel-card">
+    <span class="label">Store revenue by country · Shopify, all channels · Sep 6 – Oct 5 · 248 orders, $26,203</span>
+    <div class="chart" style="background:none;border:0;padding:0">
+      <div class="bar-row"><span class="n">United States</span><span class="bar"><i style="width:100%"></i></span><span class="v">$8,603</span></div>
+      <div class="bar-row"><span class="n">United Kingdom</span><span class="bar"><i style="width:28.5%"></i></span><span class="v">$2,449</span></div>
+      <div class="bar-row"><span class="n">Germany</span><span class="bar"><i style="width:23.3%"></i></span><span class="v">$2,004</span></div>
+      <div class="bar-row"><span class="n">Canada</span><span class="bar"><i style="width:19.1%"></i></span><span class="v">$1,642</span></div>
+      <div class="bar-row"><span class="n">Australia</span><span class="bar"><i style="width:9.6%"></i></span><span class="v">$826</span></div>
+      <div class="bar-row"><span class="n">Brazil <span class="chip">1 big order</span></span><span class="bar"><i class="neutral" style="width:30.1%"></i></span><span class="v">$2,593</span></div>
+      <div class="bar-row"><span class="n">Italy</span><span class="bar"><i class="neutral" style="width:8.7%"></i></span><span class="v">$752</span></div>
+      <div class="bar-row"><span class="n">Poland</span><span class="bar"><i class="neutral" style="width:6.9%"></i></span><span class="v">$594</span></div>
+    </div>
+    <div class="legend">
+      <span><b style="background:var(--accent-2)"></b>In the rebuild</span>
+      <span><b style="background:var(--neutral)"></b>Not in the rebuild</span>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="id">01</span>
+      <div class="body">
+        <div class="head"><h3>They are your biggest store markets</h3></div>
+        <ul class="pts">
+          <li>The US alone is 73 orders and $8,603, a third of all revenue.</li>
+          <li>The UK, Germany, Canada and Australia add 69 orders and $6,921.</li>
+          <li>Together that is 142 of 248 orders and <strong>59% of revenue</strong>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <span class="id">02</span>
+      <div class="body">
+        <div class="head"><h3>Meta already finds buyers there</h3></div>
+        <ul class="pts">
+          <li>These five countries took 90% of Meta spend ($803 of $892) and brought 20 of the 22 sales Meta reported.</li>
+          <li>The other seven countries got $89 and brought 2 small sales ($48 together).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <span class="id">03</span>
+      <div class="body">
+        <div class="head"><h3>Why the US gets its own campaign</h3></div>
+        <ul class="pts">
+          <li>It is the biggest market, and it has bigger orders (about $118 vs about $99).</li>
+          <li>A separate budget means we decide how much each market gets, instead of Meta deciding inside one mixed campaign.</li>
+          <li>It also gives a clean read per market, so we know where to add budget.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="note">Brazil looks big, but $1,999 of its $2,593 is a single Pro Bundle order. Every other country is under 3% of revenue. Germany is the market we will watch most closely: it buys well in the store, but on Meta its visits cost the most and its only sale came from an ad view, not a click.</p>
+</section>
+
+<section id="products" aria-labelledby="products-h">
+  <div class="sec-head">
+    <span class="eyebrow">Products</span>
+    <h2 id="products-h">The 10 products we advertise</h2>
+    <p class="inshort"><b>In short</b> Chosen from Shopify sales. Higher-priced bundles make it easier to reach your ROAS minimum.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Product</th><th>Price</th><th>Store orders</th><th>Revenue</th><th>US</th><th>UK/CA/AU/DE</th><th>Has Meta ads</th></tr></thead>
+      <tbody>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/content-creator-bundle.webp" alt=""><strong>Content Creator Bundle</strong></div></td><td>$99</td><td>37</td><td>$3,663</td><td>15</td><td>11</td><td><span class="status good">Yes</span></td></tr>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/narrative-bundle.webp" alt=""><strong>Narrative Bundle</strong></div></td><td>$199</td><td>22</td><td><strong>$4,378</strong></td><td>8</td><td>8</td><td><span class="status good">Yes</span></td></tr>
+        <tr class="gaprow"><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/explainer-bundle.webp" alt=""><strong>Explainer Bundle</strong></div></td><td>$299</td><td>12</td><td>$3,588</td><td>5</td><td>3</td><td><span class="status gapst">No ads yet</span></td></tr>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/true-crime-pack.webp" alt=""><strong>True Crime Pack</strong><span class="chip">launch</span></div></td><td>$99</td><td>68</td><td>$3,432</td><td>13</td><td>25</td><td><span class="status good">Yes</span></td></tr>
+        <tr class="gaprow"><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/cinematic-bundle.webp" alt=""><strong>Cinematic Bundle</strong></div></td><td>$99</td><td>14</td><td>$1,386</td><td>3</td><td>5</td><td><span class="status gapst">No ads yet</span></td></tr>
+        <tr class="gaprow"><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/tracker-callout-pack.webp" alt=""><strong>Tracker Callout Pack</strong></div></td><td>$99</td><td>11</td><td>$1,089</td><td>7</td><td>1</td><td><span class="status gapst">No ads yet</span></td></tr>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/map-creator-pro.webp" alt=""><strong>Map Creator Pro</strong></div></td><td>$199</td><td>8</td><td>$1,592</td><td>3</td><td>1</td><td><span class="status good">Yes</span></td></tr>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/infographic-bundle.webp" alt=""><strong>Infographic Bundle</strong></div></td><td>$149</td><td>7</td><td>$1,043</td><td>2</td><td>2</td><td><span class="status good">Yes</span></td></tr>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/transition-bundle.webp" alt=""><strong>Transition Bundle</strong></div></td><td>$99</td><td>6</td><td>$594</td><td>2</td><td>1</td><td><span class="status good">Yes</span></td></tr>
+        <tr><td><div class="prod"><img src="assets/campaign-plan-8-oct/products/explainer-pack.webp" alt=""><strong>Explainer Pack</strong></div></td><td>$99</td><td>2</td><td>$198</td><td>0</td><td>1</td><td><span class="status bad">None</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">True Crime has the most orders, but most came during its $49 launch (Sep 24–27), mainly through email. On Meta it is tested at its $99 price. Transition has few store sales, but on Meta it is a good entry ad: its clicks led to 4 sales, some with several packs.</p>
+
+  <p class="minor"><b>Highlighted rows</b> are best sellers with no Meta ads yet. See <a href="#gap">Best sellers with no ads</a>.</p>
+</section>
+
+<section id="keep" aria-labelledby="keep-h">
+  <div class="sec-head">
+    <span class="eyebrow">Ads we keep</span>
+    <h2 id="keep-h">We keep only the 7 strongest ads</h2>
+    <p class="inshort"><b>In short</b> 7 ads brought 18 of Meta's 22 sales, and the 3 Meta orders your store can trace to a single ad all came from them.</p>
+  </div>
+
+  <div class="rule">
+    <div><span class="k good">Keep</span><strong>7 ads</strong><p>The clearest buying signals: sales from clicks, many add-to-carts, or orders your store can trace back to the ad.</p></div>
+    <div><span class="k warn">Leave out · weak signal</span><strong>10 ads</strong><p>One sale from an ad view only, a small sale outside our markets, or a few carts with no sale.</p></div>
+    <div><span class="k bad">Leave out · no signal</span><strong>46 ads</strong><p>$199 spent with no add-to-cart, checkout or sale.</p></div>
+  </div>
+
+  <div class="keepgrid">
+    <div class="keep"><img src="assets/campaign-plan-8-oct/existing-ads/content-creator-bundle-a.jpg" alt="Content Creator Bundle A ad"><div><strong>Content Creator Bundle - A</strong><span>8 sales · 2 confirmed in Shopify</span></div></div>
+    <div class="keep"><img src="assets/campaign-plan-8-oct/existing-ads/transition-bundle-a.jpg" alt="Transition Bundle A ad"><div><strong>Transition Bundle - A</strong><span>4 sales · $198 order confirmed</span></div></div>
+    <div class="keep"><img src="assets/campaign-plan-8-oct/existing-ads/narrative-bundle-b.jpg" alt="Narrative Bundle B ad"><div><strong>Narrative Bundle - B</strong><span>2 sales on $7 of spend</span></div></div>
+    <div class="keep"><img src="assets/campaign-plan-8-oct/existing-ads/narrative-bundle-a.jpg" alt="Narrative Bundle A ad"><div><strong>Narrative Bundle - A</strong><span>1 sale · $299 order</span></div></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="small">
+      <thead><tr><th>Ad</th><th>Product</th><th>Sales<span class="sub">from clicks</span></th><th>Add to cart</th><th>Checkouts</th><th>Spend</th><th>Why we keep it</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Content Creator Bundle - A</strong></td><td>Content Creator</td><td>8 <span class="sub">4</span></td><td>14</td><td>14</td><td>$296</td><td>Best ad in the account. Sold in the US, Canada and Germany. 2 orders confirmed in Shopify.</td></tr>
+        <tr><td><strong>Transition Bundle - A</strong></td><td>Transition</td><td>4 <span class="sub">3</span></td><td>13</td><td>3</td><td>$93</td><td>Most sales from clicks after CCB-A. One confirmed $198 order with two bundles.</td></tr>
+        <tr><td><strong>Narrative Bundle - B</strong></td><td>Narrative</td><td>2 <span class="sub">1</span></td><td>1</td><td>4</td><td>$7</td><td>2 sales and 4 checkouts on only $7. Top revenue product.</td></tr>
+        <tr><td><strong>Map Creator Bundle - C</strong></td><td>Map Creator</td><td>1 <span class="sub">1</span></td><td>11</td><td>2</td><td>$10</td><td>11 add-to-carts on $10, the cheapest carts in the account. $199 product.</td></tr>
+        <tr><td><strong>True Crime Pack - 5</strong></td><td>True Crime</td><td>1 <span class="sub">1</span></td><td>4</td><td>3</td><td>$71</td><td>Sale from a click in Australia ($227 order). Proof for Campaign 2.</td></tr>
+        <tr><td><strong>Map Creator Bundle - B</strong></td><td>Map Creator</td><td>1 <span class="sub">1</span></td><td>2</td><td>3</td><td>$9</td><td>Sale from a click in the UK. Proof for Campaign 2.</td></tr>
+        <tr><td><strong>Narrative Bundle - A</strong></td><td>Narrative</td><td>1 <span class="sub">0</span></td><td>1</td><td>1</td><td>$26</td><td>Largest single order from an ad ($299). Weakest of the 7: the sale came from an ad view.</td></tr>
+        <tr class="total"><td>7 ads</td><td></td><td>18 <span class="sub">11 of 12</span></td><td>46 of 56</td><td>30 of 37</td><td>$512</td><td>All 3 store-traced orders</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">"Sales" is Meta's own count (clicks and ad views, Sep 11 – Oct 5); "from clicks" is the stricter number. "Confirmed in Shopify" means the order's visit data names the ad (Sep 6 – Oct 5). The 7 ads run in both campaigns.</p>
+  <div class="callout" style="background:var(--accent-tint);border-color:var(--accent-border)"><strong style="color:#C6A6F5">Plus 1 video</strong><span><b>Content Creator Bundle - Video 5</b> also goes in as a test. It launched on Oct 2 and got only $7.50 before the rebuild, but brought 15 visits for that, the cheapest traffic of the account's videos. Your templates are motion graphics, so video can show them animating in a way a still image can't. More video ads built from your product demo clips are planned for a later refresh.</span></div>
+
+  <details class="more">
+    <summary>The 10 ads we leave out, and why</summary>
+    <div class="inner">
+      <div class="tbl-wrap">
+        <table class="small">
+          <thead><tr><th>Ad</th><th>What it did</th><th>Why we leave it out</th></tr></thead>
+          <tbody>
+            <tr><td><strong>The Journalist Pack - A</strong></td><td>1 sale, 2 checkouts</td><td>Sale came from an ad view only. Journalist is not in the top 10.</td></tr>
+            <tr><td><strong>Content Creator Bundle - B</strong></td><td>1 sale (Canada)</td><td>Sale came from an ad view only. CCB-A covers this product better.</td></tr>
+            <tr><td><strong>True Crime Pack - 4</strong></td><td>1 sale (Italy, $29)</td><td>Small sale of a different pack, outside our markets.</td></tr>
+            <tr><td><strong>Transition Bundle - 4</strong></td><td>1 sale (Poland, $19)</td><td>Ad view only, outside our markets.</td></tr>
+            <tr><td><strong>Transition Bundle - 5</strong></td><td>2 carts, 1 checkout</td><td>No sale. Transition-A covers this product.</td></tr>
+            <tr><td><strong>Content Creator Bundle - Reformat - 1</strong></td><td>1 cart, 1 checkout</td><td>No sale.</td></tr>
+            <tr><td><strong>Infographic Bundle - C</strong></td><td>2 carts</td><td>No sale.</td></tr>
+            <tr><td><strong>Map Creator Bundle - A</strong></td><td>1 cart, $39 spent</td><td>No sale. Map C and Map B are stronger.</td></tr>
+            <tr><td><strong>Transition Bundle - C</strong></td><td>1 cart</td><td>No sale.</td></tr>
+            <tr><td><strong>True Crime Pack - 1</strong></td><td>1 cart</td><td>No sale, and some copies carry Map Creator headlines by mistake.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">These stay paused with the old campaigns, so any of them can come back later.</p>
+    </div>
+  </details>
+</section>
+
+<section id="new" aria-labelledby="new-h">
+  <div class="sec-head">
+    <span class="eyebrow">New ads</span>
+    <h2 id="new-h">27 new ads for all 10 products</h2>
+    <p class="inshort"><b>In short</b> Made on Oct 7 and 8. Every product gets ads for each stage, and each ad shows real output from your templates, written for one type of editor.</p>
+  </div>
+  <p class="muted" style="max-width:75ch">"Speaks to" is the editor each ad is written for. We don't target these people by interest: the campaigns stay broad (guided by the buyer lookalike), and the ad's picture and words do the work of finding them. The pictures are frames taken from your own product demo videos. Every ad also has a vertical 9:16 version for Stories and Reels. Only 8 of the 27 show a price: one per product. They are not live yet; they go into both campaigns at launch.</p>
+
+  <div class="stagekey"><span class="label">Each ad is written for one stage</span>
+    <span><span class="stage cold">New to the problem</span> shows the problem, for people who haven't looked for a fix yet</span>
+    <span><span class="stage warm">Looking for a fix</span> shows how the product solves it</span>
+    <span><span class="stage hot">Ready to buy</span> shows what's inside and the price</span>
+  </div>
+
+  <div class="newads">
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Content Creator Bundle</h3><span>2 ads · new versions of the best-selling ad</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ContentCreator-AllInOne_MOF_Solution_Static-R3_4x5_v2.jpg" alt="Upload day. Graphics already built."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Upload day, with the graphics already built.</dd>
+            <dt>Speaks to</dt><dd>Weekly YouTubers and streamers who rebuild the same subscribe pop-ups, comment cards and sign-up cards every week.</dd>
+            <dt>Message</dt><dd>One bundle covers the channel: 10 packs, 400+ assets. Built on Content Creator Bundle - A, the account's best-selling ad.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ContentCreator-AllInOne_BOF_Most_Static-R5_4x5_v3.jpg" alt="Weekly upload? 10 packs, one download."><div class="cap">
+          <span class="stage hot">Ready to buy</span>
+          <dl>
+            <dt>Angle</dt><dd>The whole channel toolkit for $99.</dd>
+            <dt>Speaks to</dt><dd>Creators who already know the bundle, or are comparing prices before buying.</dd>
+            <dt>Message</dt><dd>Every graphic a weekly channel needs in one download, at a clear price.</dd>
+            <dt>Offer shown</dt><dd>Now $99, was $350, one-time payment</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Narrative Bundle</h3><span>2 ads · new versions of Narrative - B</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_DocChapter-SkipFusion_MOF_Solution_Static-R1_4x5_v2.jpg" alt="YouTube doc? Chapter cards in 2 minutes."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Don't stop the story to build a graphic.</dd>
+            <dt>Speaks to</dt><dd>Documentary and history YouTubers whose chapter is written but whose chapter card is not.</dd>
+            <dt>Message</dt><dd>Drag-and-drop chapter cards, no Fusion. Built on Narrative Bundle - B, which brought 2 sales.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_DocChapter-SkipFusion_TOF_Problem_Static-R7_4x5_v3.jpg" alt="Building one chapter card: Fusion about 2 hours, Edit page about 2 minutes."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Before and after: one chapter card, 2 hours or 2 minutes.</dd>
+            <dt>Speaks to</dt><dd>Documentary editors who still build their chapter cards in Fusion.</dd>
+            <dt>Message</dt><dd>Shows the 5 Fusion steps next to drag, type, done.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Explainer Bundle</h3><span class="status gapst">First ads ever</span><span>3 ads</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ScriptStat-ScriptToScreen_TOF_Problem_Static-R4_4x5_v1.jpg" alt="Stats in your script? Animate them in Resolve."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Turn the numbers in your script into animated charts.</dd>
+            <dt>Speaks to</dt><dd>Creators who write scripts full of numbers but show them as plain text on screen.</dd>
+            <dt>Message</dt><dd>A written stat becomes an animated chart inside DaVinci Resolve, without learning motion design.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ScriptStat-DragMap_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Your script says Berlin. Map's ready."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>The map your script needs, ready to drag in.</dd>
+            <dt>Speaks to</dt><dd>Explainer and documentary editors whose script names a place, and who have no map for it yet.</dd>
+            <dt>Message</dt><dd>Drag the map in and pick the city in the Inspector. Maps, charts and pointers in one bundle.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ExplainerChannel-MapsToTimelines_BOF_Most_Static-R6_4x5_v1.jpg" alt="Explainer channel? Maps, charts, timelines. All for $299."><div class="cap">
+          <span class="stage hot">Ready to buy</span>
+          <dl>
+            <dt>Angle</dt><dd>Everything an explainer channel needs, at one price.</dd>
+            <dt>Speaks to</dt><dd>YouTubers who run explainer, essay or news-style channels and already know they need maps and charts.</dd>
+            <dt>Message</dt><dd>Shows all the packs inside: maps, explainer, bullet points, pointers, timeline and more.</dd>
+            <dt>Offer shown</dt><dd>$299, one-time payment, commercial license</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>True Crime Pack</h3><span>3 ads · new angles</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_TrueCrime-CaseFiles_TOF_Problem_Static-R1_4x5_v1.jpg" alt="True crime channel? 120 case-file graphics."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Case-file graphics made for true crime channels.</dd>
+            <dt>Speaks to</dt><dd>True crime YouTubers editing at night, building case cards and evidence boards by hand.</dd>
+            <dt>Message</dt><dd>120 case-file style graphics, ready to drop on the timeline.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_TrueCrime-MarkSuspect_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Mark the suspect. No Fusion needed."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Mark the suspect without Fusion.</dd>
+            <dt>Speaks to</dt><dd>True crime editors who need face boxes, labels and callouts on archive footage.</dd>
+            <dt>Message</dt><dd>Drag the callout in and restyle it in the Inspector. 120 graphics, drag and drop.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_TrueCrime-NextCase_BOF_Most_Static-R5_4x5_v1.jpg" alt="Next case video? 120 graphics, one pack."><div class="cap">
+          <span class="stage hot">Ready to buy</span>
+          <dl>
+            <dt>Angle</dt><dd>Every graphic for the next case, in one pack.</dd>
+            <dt>Speaks to</dt><dd>True crime channels planning their next episode, ready to buy.</dd>
+            <dt>Message</dt><dd>Case cards, lower thirds and callouts together.</dd>
+            <dt>Offer shown</dt><dd>$99</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Cinematic Bundle</h3><span class="status gapst">First ads ever</span><span>3 ads</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_PictureLock-TitleCard_TOF_Problem_Static-R1_4x5_v1.jpg" alt="Short film done? Give it real titles."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Your finished film deserves real titles.</dd>
+            <dt>Speaks to</dt><dd>Indie and short-film makers who just finished their edit.</dd>
+            <dt>Message</dt><dd>Default text makes a finished film look unfinished. Film-style titles fix the first thing people see.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_PictureLock-FestivalCut_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Festival cut due Friday. Titles still default?"><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>A deadline: the film is done, the titles are not.</dd>
+            <dt>Speaks to</dt><dd>Short-film makers finishing a cut for a festival or a client deadline.</dd>
+            <dt>Message</dt><dd>7 packs of titles, lower thirds and credits. Drag one in, set font and timing in the Inspector.</dd>
+            <dt>Offer shown</dt><dd>Was $173, now $99</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_PictureLock-WholeFilm_MOF_Solution_Static-R6_4x5_v1.jpg" alt="Locked the cut? Pick your opening title."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Everything from the opening title to the end credits.</dd>
+            <dt>Speaks to</dt><dd>Filmmakers with a locked cut, choosing how the film opens and closes.</dd>
+            <dt>Message</dt><dd>Opening titles, lower thirds, end credits, intros and icons in one bundle. Works in the free and Studio versions.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Tracker Callout Pack</h3><span class="status gapst">First ads ever</span><span>2 ads</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ReviewBroll-EditPageCallout_TOF_Problem_Static-R7_4x5_v2.jpg" alt="On-screen callouts: 2 hours or 2 minutes."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Before and after: 2 hours in Fusion, or 2 minutes with the pack.</dd>
+            <dt>Speaks to</dt><dd>Editors who still build callouts node by node in Fusion.</dd>
+            <dt>Message</dt><dd>Shows the Fusion steps next to drag, restyle, done. The time saved is the reason to look.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ReviewBroll-EditPageCallout_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Filmed the product. Now label it."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Label your product shots without Fusion.</dd>
+            <dt>Speaks to</dt><dd>Product reviewers and tech YouTubers who have filmed their B-roll and now need to point out features and specs.</dd>
+            <dt>Message</dt><dd>Drag a callout onto the shot and restyle it in the Inspector. No Fusion, no keyframes.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Map Creator Pro</h3><span>3 ads · new angles; earlier ads were box shots with few sales</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_MapStory-MinutesNotHours_TOF_Problem_Static-R7_4x5_v1.jpg" alt="Animated maps in minutes, not hours."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Animated maps in minutes, not hours.</dd>
+            <dt>Speaks to</dt><dd>Creators who find maps, trace borders and animate zooms by hand.</dd>
+            <dt>Message</dt><dd>Shows the manual steps next to pick, highlight, done.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_MapStory-HistoryChannel_MOF_Solution_Static-R1_4x5_v1.jpg" alt="History channel? Maps in minutes, not hours."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Maps for history channels, made in minutes.</dd>
+            <dt>Speaks to</dt><dd>History YouTubers whose videos move from country to country.</dd>
+            <dt>Message</dt><dd>Highlight a country in a few clicks, right on the timeline.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_MapStory-44Styles_BOF_Most_Static-R5_4x5_v1.jpg" alt="One map. 44 styles. Your pick."><div class="cap">
+          <span class="stage hot">Ready to buy</span>
+          <dl>
+            <dt>Angle</dt><dd>One map, 44 looks.</dd>
+            <dt>Speaks to</dt><dd>Map-heavy creators deciding whether to buy.</dd>
+            <dt>Message</dt><dd>200+ 8K maps, each in 44 styles, from satellite to highlight.</dd>
+            <dt>Offer shown</dt><dd>$199</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Infographic Bundle</h3><span>3 ads · new angles; earlier ads were box shots with few sales</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_DataCreator-WorkoutTimer_TOF_Problem_Static-R1_4x5_v1.jpg" alt="Workout video? Put the timer on screen."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Put the timer on screen.</dd>
+            <dt>Speaks to</dt><dd>Fitness creators filming workouts and exercises.</dd>
+            <dt>Message</dt><dd>An animated timer on the footage makes the video easier to follow.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_DataCreator-NumbersOnFootage_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Put the numbers on the footage."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Put the numbers on the footage.</dd>
+            <dt>Speaks to</dt><dd>Creators whose videos have stats: steps, distance, calories, scores.</dd>
+            <dt>Message</dt><dd>Drag the graphic in and set the value with a slider.</dd>
+            <dt>Offer shown</dt><dd>Was $372, now $149</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_DataCreator-ShowTheSplit_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Comparing two numbers? Show the split."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Comparing two numbers? Show the split.</dd>
+            <dt>Speaks to</dt><dd>Data and explainer creators who compare figures in their videos.</dd>
+            <dt>Message</dt><dd>Counters, charts and timers in 9 packs. Values set with a slider.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Transition Bundle</h3><span>3 ads · new angles; earlier ads were box shots</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_VlogCuts-ThreeStyles_TOF_Problem_Static-R3_4x5_v1.jpg" alt="Film burn. Glitch. Paper rip transitions."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Film burn, glitch, paper rip.</dd>
+            <dt>Speaks to</dt><dd>Editors who want their cuts to have a style, not just a fade.</dd>
+            <dt>Message</dt><dd>Shows three of the 8 transition styles on real footage.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_VlogCuts-PaperRip_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Vlog cuts feel flat? Try a paper rip."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Vlog cuts feel flat? Try a paper rip.</dd>
+            <dt>Speaks to</dt><dd>Travel and lifestyle vloggers.</dd>
+            <dt>Message</dt><dd>Drop it on the cut between two clips. 150+ transitions, drag and drop.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_VlogCuts-CrossDissolve_BOF_Most_Static-R6_4x5_v1.jpg" alt="Still using cross dissolve? 8 packs, $99."><div class="cap">
+          <span class="stage hot">Ready to buy</span>
+          <dl>
+            <dt>Angle</dt><dd>Still using cross dissolve?</dd>
+            <dt>Speaks to</dt><dd>Editors still on default transitions, ready to upgrade.</dd>
+            <dt>Message</dt><dd>Lists all 8 packs: Visual Blend, Film Burn, Paper Rip, Glitch and more.</dd>
+            <dt>Offer shown</dt><dd>$99</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <div class="pgroup-h"><h3>Explainer Pack</h3><span class="status gapst">First ads ever</span><span>3 ads</span></div>
+      <div class="adgrid">
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ExplainerVideo-PlainTalkingHead_TOF_Problem_Static-R7_4x5_v1.jpg" alt="Explainer looks plain? Add 100+ graphics."><div class="cap">
+          <span class="stage cold">New to the problem</span>
+          <dl>
+            <dt>Angle</dt><dd>Your explainer looks plain.</dd>
+            <dt>Speaks to</dt><dd>Talking-head explainer creators with few visuals on screen.</dd>
+            <dt>Message</dt><dd>Before: no chart for the stat, no map for the place, plain text. After: the pack on the Edit page.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ExplainerVideo-HighlightLine_MOF_Solution_Static-R2_4x5_v1.jpg" alt="Key line in the script? Highlight it."><div class="cap">
+          <span class="stage warm">Looking for a fix</span>
+          <dl>
+            <dt>Angle</dt><dd>Highlight the key line.</dd>
+            <dt>Speaks to</dt><dd>Explainer creators with a line in the script that needs to stand out.</dd>
+            <dt>Message</dt><dd>Highlighted text cards. 100+ explainer graphics, drag and drop.</dd>
+            <dt>Offer shown</dt><dd>None</dd>
+          </dl>
+        </div></div>
+        <div class="ad"><img src="assets/campaign-plan-8-oct/new-ads/26OCTW2_VES_ExplainerVideo-HundredGraphics_BOF_Most_Static-R5_4x5_v1.jpg" alt="Explainer video? 100+ graphics. One pack."><div class="cap">
+          <span class="stage hot">Ready to buy</span>
+          <dl>
+            <dt>Angle</dt><dd>A starter kit for explainer videos.</dd>
+            <dt>Speaks to</dt><dd>Explainer creators ready to buy, and a cheaper way into the Explainer line.</dd>
+            <dt>Message</dt><dd>Charts, maps, pointers and text in one pack.</dd>
+            <dt>Offer shown</dt><dd>$99</dd>
+          </dl>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+  <p class="note">One thing to confirm before launch: the number of packs and assets differs between your pricing page, product pages and box art. The ads use the pricing-page numbers and prices (including "was $350" and "was $173"). Please confirm these are current.</p>
+</section>
+
+<section id="judge" aria-labelledby="judge-h">
+  <div class="sec-head">
+    <span class="eyebrow">Budget</span>
+    <h2 id="judge-h">Budget, and how we judge it</h2>
+    <p class="inshort"><b>In short</b> 60/40 for two weeks, then move money toward whichever market earns it.</p>
+  </div>
+
+  <div class="two">
+    <div>
+      <span class="label">Split at $100 a day</span>
+      <h4>US $60 · UK/CA/AU/DE $40</h4>
+      <p>At about $83 per sale, $40 a day gives Campaign 2 around 7 sales in two weeks. That is enough to judge it. With less it would take a month to know.</p>
+    </div>
+    <div>
+      <span class="label">Target cost per sale</span>
+      <h4>Under ~$90 (US) · under ~$75 (UK/CA/AU/DE)</h4>
+      <p>This is what keeps each market at your 1.3x minimum, based on its average order ($118 and $99). We use Meta's click-only count, then check the orders against Shopify.</p>
+    </div>
+  </div>
+
+  <div class="checks">
+    <div class="check"><i></i><div><b>Every week</b><span>Move $10 toward a campaign that is under its target and has at least one Meta order that Shopify can also see.</span></div></div>
+    <div class="check"><i></i><div><b>After two weeks</b><span>If UK/CA/AU/DE hits its target: keep 60/40 or go 50/50. If not: move to 70/30 or 80/20.</span></div></div>
+    <div class="check"><i></i><div><b>Age at day 14</b><span>If 65+ still takes about 10% of spend with no add-to-carts, or 25–34 stays below break-even, we narrow the age range.</span></div></div>
+    <div class="check"><i></i><div><b>Germany</b><span>If it is still the weakest of the four after two weeks, we drop it and give its share to the UK, Canada and Australia.</span></div></div>
+  </div>
+</section>
+
+<section aria-labelledby="setup-h">
+  <div class="sec-head">
+    <span class="eyebrow">Setup</span>
+    <h2 id="setup-h">How the new campaigns are set up</h2>
+  </div>
+  <div class="checks">
+    <div class="check"><i></i><div><b>One ad set per campaign, with all 35 ads</b><span>The 7 kept ads, the Content Creator video and the 27 new ones in a single ad set, so every sale teaches the same ad set. Meta moves spend toward the ads that sell.</span></div></div>
+    <div class="check"><i></i><div><b>Age: minimum 25, suggested 30–64</b><span>People aged 35–64 bought 10 of the 12 sales from clicks and 91% of the revenue (Sep 11 – Oct 8). 25–34 spent $218 for one $99 sale, and 65+ spent $101 with no add-to-cart. Industry data agrees that editors are mostly 25–44 (median age 33–37). The minimum age of 25 is a strict rule. The 30–64 range is a suggestion: Meta starts there but can still find buyers outside it. We check the age split again at day 14.</span></div></div>
+    <div class="check"><i></i><div><b>Optimized for the number of purchases</b><span>Meta looks for as many buyers as possible. Optimizing for order value needs more sales a week than we have at launch. We revisit it once there are enough sales, or if the average order drops.</span></div></div>
+    <div class="check"><i></i><div><b>Each ad opens its own product page</b><span>So the person lands on the product they clicked, not a different one.</span></div></div>
+    <div class="check"><i></i><div><b>Product browsing off</b><span>It showed cheap single packs under the ad and pulled the average order down from $174 to $83.</span></div></div>
+    <div class="check"><i></i><div><b>Automatic creative changes off</b><span>Meta will show the ads as designed, without auto-adding music, filters or other images.</span></div></div>
+    <div class="check"><i></i><div><b>Counting by clicks only (7-day click), with your OK</b><span>Closer to what Shopify and Triple Whale see. See the Tracking &amp; Attribution Read.</span></div></div>
+    <div class="check"><i></i><div><b>Tracking tags on every ad</b><span>Including Triple Whale's tags, so Triple Whale can match sales to each ad (suggested in the Tracking Read).</span></div></div>
+  </div>
+</section>
+
+<footer>
+  <span>Store figures are Shopify orders placed Sep 6 – Oct 5, 2026, all sales channels, store time (Hong Kong). Ad figures are Meta Ads Manager, Sep 11 – Oct 5, 2026.</span>
+  <span>This plan is for the rebuild with the current product pages. When Neil and Mehdi's new funnel page is ready, we will adjust where the ads point.</span>
+  <span>Prepared by Yoedhistiera · Skyvane</span>
+</footer>
+
+</div>
+
+</body>
+</html>
