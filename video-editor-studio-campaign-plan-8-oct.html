@@ -408,6 +408,25 @@ tr.gaprow td:first-child{box-shadow:inset 3px 0 0 var(--accent-2)}
 .stagekey{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted);border:1px dashed var(--line-strong);border-radius:12px;padding:14px 16px}
 .stagekey > span:not(.label){display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font-weight:400;color:var(--dim)}
+/* Landing page plan (#lp). Scoped to #lp; everything else reuses the report's classes. */
+#lp .kpis{grid-template-columns:repeat(4,1fr)}
+#lp .kpi .s{font-size:12px;color:var(--muted);line-height:1.4}
+@media (max-width:760px){
+  #lp .kpis{grid-template-columns:repeat(2,1fr)}
+  #lp .kpi:last-child{grid-column:auto;border-bottom:1px solid var(--line)}
+  #lp .kpi:nth-last-child(-n+2){border-bottom:0}
+}
+#lp ul.pts b{color:var(--white);font-weight:600}
+#lp .abo .camp{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 28px;border-radius:12px}
+#lp .abo .camp strong{font-weight:600}
+#lp .abo .set .b{font-weight:500;color:var(--muted)}
+#lp .lp-3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:860px){#lp .lp-3{grid-template-columns:1fr}}
+#lp .concept .cb h3{font-size:15px;line-height:1.4}
+#lp .lp-3 .concept dl{grid-template-columns:1fr;gap:2px}
+#lp .lp-3 .concept dd{margin-bottom:8px}
+#lp .lp-3 .concept dd:last-child{margin-bottom:0}
+#lp .concept .ch .stage{flex:none}
 </style>
 
 <div class="topbar">
@@ -424,6 +443,7 @@ th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font
         <li><a href="#keep">Ads we keep</a></li>
         <li><a href="#new">New ads</a></li>
         <li><a href="#judge">Budget</a></li>
+        <li><a href="#lp">Landing pages</a></li>
       </ul>
     </nav>
   </div>
@@ -446,7 +466,7 @@ th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font
   <div class="tldr">
     <span class="eyebrow">TL;DR</span>
     <ul class="tl">
-      <li><b>Phases</b><span><strong>Phase 1: Rebuild</strong> (this plan). <strong>Phase 2: Launch</strong> the custom landing pages for the top products (the hero products), built on what Phase 1 shows sells.</span></li>
+      <li><b>Phases</b><span><strong>Phase 1: Rebuild</strong> (this plan). <strong>Phase 2: Launch</strong> landing pages for one hero product first, the Content Creator Bundle, then the next best seller (see the <a href="#lp">Landing page plan</a>).</span></li>
       <li><b>What</b><span>We pause the current 4 campaigns and relaunch as 2: one for the <strong>US</strong>, one for the <strong>UK, Canada, Australia and Germany</strong>. At $100 a day, that's $60 and $40.</span></li>
       <li><b>Why</b><span>The current setup spreads about $48 a day over 176 active ads in 8 ad sets. No ad set has had enough sales to learn, so there is nothing to lose by pausing, and the tracking fixes need new ad sets anyway.</span></li>
       <li><b>Products</b><span>The 10 best sellers in Shopify, including <strong>3 that sell well but have never had an ad</strong>: Explainer, Cinematic and Tracker Callout.</span></li>
@@ -574,9 +594,9 @@ th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font
     <table class="small">
       <thead><tr><th></th><th>Current setup</th><th>After the rebuild</th></tr></thead>
       <tbody>
-        <tr><td><strong>Campaigns</strong></td><td>4, each mixing 12 countries</td><td>2, split by market</td></tr>
+        <tr><td><strong>Campaigns</strong></td><td>4, with all countries mixed together</td><td>2, split by market</td></tr>
         <tr><td><strong>Ads</strong></td><td>63 ads with spend (Content Creator alone had 50 active)</td><td>35: the 7 strongest, 1 video and 27 new, about $3 per ad per day</td></tr>
-        <tr><td><strong>Products with ads</strong></td><td>7, with 3 top sellers missing</td><td>10, chosen from Shopify sales</td></tr>
+        <tr><td><strong>Products with ads</strong></td><td>7. Explainer, Cinematic and Tracker Callout have none</td><td>10, chosen from Shopify sales</td></tr>
         <tr><td><strong>How sales are counted</strong></td><td>Clicks + ad views (7-day click, 1-day view)</td><td>Clicks only (7-day click)</td></tr>
       </tbody>
     </table>
@@ -669,7 +689,7 @@ th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font
       </div>
     </div>
   </div>
-  <p class="note">Brazil looks big, but $1,999 of its $2,593 is a single Pro Bundle order. Every other country is under 3% of revenue. Germany is the market we will watch most closely: it buys well in the store, but on Meta its visits cost the most and its only sale came from an ad view, not a click.</p>
+  <p class="note">Brazil looks big, but $1,999 of its $2,593 is a single Pro Bundle order. Every other country is under 3% of revenue. Germany is the market we will watch most closely: it buys well in the store, but on Meta its visits cost the most of the five and its only sale came from an ad view, not a click.</p>
 </section>
 
 <section id="products" aria-labelledby="products-h">
@@ -696,7 +716,7 @@ th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font
       </tbody>
     </table>
   </div>
-  <p class="note">True Crime has the most orders, but most came during its $49 launch (Sep 24–27), mainly through email. On Meta it is tested at its $99 price. Transition has few store sales, but on Meta it is a good entry ad: its clicks led to 4 sales, some with several packs.</p>
+  <p class="note">True Crime has the most orders, but most came during its $49 launch (Sep 24–27), mainly through email. On Meta it is tested at its $99 price. Transition has few store sales, but on Meta it is a good entry ad: it brought 4 sales, some with several packs.</p>
 
   <p class="minor"><b>Highlighted rows</b> are best sellers with no Meta ads yet. See <a href="#gap">Best sellers with no ads</a>.</p>
 </section>
@@ -1131,9 +1151,113 @@ th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px;font
   </div>
 </section>
 
+<section id="lp" aria-labelledby="lp-h">
+  <div class="sec-head">
+    <span class="eyebrow">Phase 2: Landing pages</span>
+    <h2 id="lp-h">Landing page plan</h2>
+    <p class="inshort"><b>In short</b> We start with one product, the Content Creator Bundle, and build 6 pages for it: a new master product page, 2 competitor rips and 3 listicles. That shows us which kinds of page sell. Then we replicate the winners for the other products.</p>
+  </div>
+
+  <span class="label">Why the Content Creator Bundle goes first · your store data, all time</span>
+  <div class="kpis">
+    <div class="kpi"><span class="label">Orders</span><span class="v">563</span><span class="s">#1 product by orders, all time and last 90 days</span></div>
+    <div class="kpi"><span class="label">New customers</span><span class="v">81%</span><span class="s">of buyers had never bought from you before</span></div>
+    <div class="kpi"><span class="label">Refunded orders</span><span class="v">1 of 563</span><span class="s">one partial refund, no disputes</span></div>
+    <div class="kpi hi"><span class="label">Lifetime spend</span><span class="v">$170</span><span class="s">per bundle buyer, vs $92 store average</span></div>
+  </div>
+
+  <ul class="pts">
+    <li><b>It sells the most, and faster than last year.</b> July to September averaged 32 orders a month at $99, about 4x its 2025 pace before Black Friday.</li>
+    <li><b>It's the way into the store.</b> For most of its buyers it's their first order with you, and almost 1 in 4 comes back for another product, most of them within 90 days.</li>
+    <li><b>Meta already sells it.</b> Content Creator Bundle - A is the best ad in the account, and the bundle is your top seller in the US (15 orders last month).</li>
+    <li><b>The page is the weak link.</b> The best ad wins the click with "400+ Assets for DaVinci Resolve", then promises transitions, infographics and maps. Those live in other bundles. A page built for this one product closes that gap and shows exactly what's inside.</li>
+  </ul>
+  <p class="note">Narrative brought more revenue last month ($4,378 vs $3,663) at twice the price. The bundle still goes first: it brings in the new customers, so a better page here pays off on everything they buy next.</p>
+
+  <div class="abo">
+    <div class="camp"><span class="label">One product</span><strong>Content Creator Bundle · $99</strong></div>
+    <div class="stem"></div>
+    <div class="sets">
+      <div class="set"><span class="label">1 page</span><strong>Master product page</strong><span class="b">Replaces today's page</span></div>
+      <div class="set"><span class="label">2 pages</span><strong>Competitor rips</strong><span class="b">Layouts that scale, our product</span></div>
+      <div class="set"><span class="label">3 pages</span><strong>Listicles</strong><span class="b">Warm up, then send to the product page</span></div>
+    </div>
+  </div>
+  <p class="minor"><b>Order:</b> the master page first, then the 2 competitor rips, then the 3 listicles. Every page reuses the master page's offer and proof.</p>
+
+  <div class="cards">
+    <div class="card">
+      <span class="id">01</span>
+      <div class="body">
+        <div class="head"><h3>A new master product page</h3><p class="muted">Same product, same price, same cart drawer and upsells. What changes is the order of the arguments and the proof behind each one.</p></div>
+        <ul class="pts">
+          <li>Opens with the words of the best ad, "400+ assets for DaVinci Resolve", so the page matches the click.</li>
+          <li>Shows all 10 packs with their asset counts and prices, then the maths: $350 bought one by one, $99 together.</li>
+          <li>Says what isn't inside and links the bundles that have it: transitions, maps, infographics.</li>
+          <li>Answers "will it work in my Resolve?" next to the button: versions 19 to 21, Free and Studio, and how vertical video works.</li>
+          <li>Shows the 3 steps in motion: drag it from the Effect Library, change it in the Inspector, no Fusion.</li>
+          <li>Uses the channel as proof (59.4K subscribers, 7.27M views) and real reviews, word for word.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="id">02</span>
+      <div class="body">
+        <div class="head"><h3>Two competitor rips</h3><p class="muted">We take 2 pages that scale hard right now and rebuild them for the bundle. They can come from video editing assets or from a nearby creator market: a page that scales in another niche beats a page in our niche that doesn't.</p></div>
+        <ul class="pts">
+          <li><b>How we pick them:</b> the pages that take the most paid traffic and keep adding ads week after week.</li>
+          <li><b>What we take:</b> the layout, the section order and the way they sell the offer: price, what's inside, proof.</li>
+          <li><b>What we leave:</b> their words, their visuals, and any claim we can't back with your numbers, like made-up anchors, review counts or countdowns that reset.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="id">03</span>
+      <div class="body">
+        <div class="head"><h3>Three listicles</h3><p class="muted">A listicle is a "reasons why" article. It warms up people who aren't ready for a product page, then sends them to the master page. Each one matches a Phase 1 ad stage.</p></div>
+        <div class="concepts lp-3">
+          <div class="concept">
+            <div class="ch"><span class="label">Listicle 1</span><span class="stage cold">New to the problem</span></div>
+            <div class="cb">
+              <h3>7 reasons your videos don't look like theirs (and it's not your camera)</h3>
+              <dl><dt>Speaks to</dt><dd>Creators who can feel something's missing in their videos but can't say what.</dd><dt>Reason 1</dt><dd>It's the small things on screen: the titles, the pop-ups, the callouts.</dd></dl>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="ch"><span class="label">Listicle 2</span><span class="stage warm">Looking for a fix</span></div>
+            <div class="cb">
+              <h3>6 reasons your edits take hours and still don't look the way you want</h3>
+              <dl><dt>Speaks to</dt><dd>DaVinci Resolve editors who lose whole evenings building titles and pop-ups by hand.</dd><dt>Reason 1</dt><dd>You're building from scratch what other editors drag in ready-made.</dd></dl>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="ch"><span class="label">Listicle 3</span><span class="stage hot">Ready to buy</span></div>
+            <div class="cb">
+              <h3>The pro look is one drag away: 5 reasons Resolve editors switched to ready-made graphics</h3>
+              <dl><dt>Speaks to</dt><dd>Editors who know what they want on screen and want it there without learning Fusion.</dd><dt>Reason 1</dt><dd>Drag it from the Effect Library, type your text, done.</dd></dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <span class="label">How the pages plug into Phase 1</span>
+  <div class="checks">
+    <div class="check"><i></i><div><b>One product, one cart</b><span>Every page adds the same bundle and opens your cart drawer, upsells included. Checkout doesn't change.</span></div></div>
+    <div class="check"><i></i><div><b>Each page gets its own ads</b><span>Same campaigns, same tracking tags, Triple Whale's included. Each order also records the page it came through, so we read results in Shopify, not only in Meta.</span></div></div>
+    <div class="check"><i></i><div><b>After the day-14 read</b><span>New links go in as new ads after Phase 1's day-14 read, so they don't reset the rebuild's learning.</span></div></div>
+    <div class="check"><i></i><div><b>The best page takes the budget</b><span>Pages are compared on cost per Shopify order. The winner becomes the product page for all traffic. The others get reworked or cut.</span></div></div>
+    <div class="check"><i></i><div><b>Then the other products</b><span>Once we know which kinds of page sell for the bundle, we replicate them for the next best sellers.</span></div></div>
+  </div>
+  <p class="note">Bundle figures come from your store analytics (Shopify orders matched to Stripe and PayPal cash), pulled Oct 8, 2026. Ad figures and last month's Shopify figures are the ones used in the sections above.</p>
+</section>
+
 <footer>
   <span>Store figures are Shopify orders placed Sep 6 – Oct 5, 2026, all sales channels, store time (Hong Kong). Ad figures are Meta Ads Manager, Sep 11 – Oct 5, 2026.</span>
-  <span>Phase 1 is this rebuild, on your current product pages. Phase 2 launches custom landing pages for the top products (the hero products), and the ads then point there.</span>
+  <span>Phase 1 is this rebuild, on your current product pages. Phase 2 launches landing pages for the Content Creator Bundle first, and the ads then point there.</span>
   <span>Prepared by Yoedhistiera · Skyvane</span>
 </footer>
 
